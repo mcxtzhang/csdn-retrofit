@@ -1,5 +1,6 @@
 package anlaiye.com.cn.csdn_retrofit.normal;
 
+import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -49,6 +50,26 @@ public interface GankApi {
     @FormUrlEncoded
     @POST("api/add2gank")
     Call<ResponseBody> postData(@Field("url") String url,
+                                @Field("desc") String desc,
+                                @Field("who") String who,
+                                @Field("type") String type,
+                                @Field("debug") String debug);
+
+    /**
+     * Rxjava的形式返回
+     * 数据类型： 福利 | Android | iOS | 休息视频 | 拓展资源 | 前端 | all
+     * 请求个数： 数字，大于0
+     * 第几页：数字，大于0
+     */
+    @GET("api/data/{category}/{size}/{page}")
+    Observable<GetBean> getDataByRx(@Path("category") String a,
+                                    @Path("size") String b,
+                                    @Path("page") String c);
+
+
+    @FormUrlEncoded
+    @POST("api/add2gank")
+    Observable<Object> postDataByRx(@Field("url") String url,
                                 @Field("desc") String desc,
                                 @Field("who") String who,
                                 @Field("type") String type,

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import anlaiye.com.cn.csdn_retrofit.normal.NormalActivity;
+import anlaiye.com.cn.csdn_retrofit.rxjava.RxActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,5 +21,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, NormalActivity.class));
             }
         });
+        findViewById(R.id.btnLevel2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, RxActivity.class));
+            }
+        });
+
     }
 }

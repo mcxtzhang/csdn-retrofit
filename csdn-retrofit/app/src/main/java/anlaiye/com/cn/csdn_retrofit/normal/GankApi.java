@@ -1,5 +1,6 @@
 package anlaiye.com.cn.csdn_retrofit.normal;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -74,4 +75,12 @@ public interface GankApi {
                                 @Field("who") String who,
                                 @Field("type") String type,
                                 @Field("debug") String debug);
+
+    @FormUrlEncoded
+    @POST("api/add2gank")
+    Completable postDataByRxNoReturn(@Field("url") String url,
+                                     @Field("desc") String desc,
+                                     @Field("who") String who,
+                                     @Field("type") String type,
+                                     @Field("debug") String debug);
 }

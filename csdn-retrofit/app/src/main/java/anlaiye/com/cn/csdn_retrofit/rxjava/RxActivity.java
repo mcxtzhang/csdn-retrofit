@@ -3,13 +3,17 @@ package anlaiye.com.cn.csdn_retrofit.rxjava;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import anlaiye.com.cn.csdn_retrofit.R;
 import anlaiye.com.cn.csdn_retrofit.normal.GankApi;
 import anlaiye.com.cn.csdn_retrofit.normal.GetBean;
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
@@ -97,6 +101,42 @@ public class RxActivity extends AppCompatActivity {
                             @Override
                             public void onComplete() {
 
+                            }
+                        });
+            }
+        });
+
+
+
+
+        Button btnCompletable = (Button) findViewById(R.id.btnUrl);
+        btnCompletable.setText("Completable");
+        btnCompletable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Completable completable = gankApi.postDataByRxNoReturn("http://square.github.io/retrofit/",
+                        "测试数据",
+                        "未来Android大佬",
+                        "Android",
+                        "true");
+
+                //不关心返回值
+                completable.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new CompletableObserver() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Toast.makeText(RxActivity.this, "成功了", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Toast.makeText(RxActivity.this, "错:" + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
             }

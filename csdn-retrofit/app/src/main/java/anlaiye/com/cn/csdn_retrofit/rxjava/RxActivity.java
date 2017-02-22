@@ -13,7 +13,9 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import anlaiye.com.cn.csdn_retrofit.R;
 import anlaiye.com.cn.csdn_retrofit.base.AppenBodyParamsInterceptor;
 import anlaiye.com.cn.csdn_retrofit.base.AppendUrlParamInterceptor;
+import anlaiye.com.cn.csdn_retrofit.base.NetUtils;
 import anlaiye.com.cn.csdn_retrofit.base.NetworkConfig;
+import anlaiye.com.cn.csdn_retrofit.base.PreHandleNoNetInterceptor;
 import anlaiye.com.cn.csdn_retrofit.normal.GankApi;
 import anlaiye.com.cn.csdn_retrofit.normal.GetBean;
 import io.reactivex.Completable;
@@ -37,10 +39,15 @@ public class RxActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_normal);
 
+        NetUtils.init(this);
+
         mTvResult = (TextView) findViewById(R.id.tvResult);
 
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
+
+        //按照顺序执行拦截器
+        builder.addInterceptor(new PreHandleNoNetInterceptor());
 
         //自动追加url参数
         builder.addInterceptor(new AppendUrlParamInterceptor());

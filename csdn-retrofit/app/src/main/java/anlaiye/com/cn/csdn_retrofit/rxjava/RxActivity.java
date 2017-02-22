@@ -16,6 +16,7 @@ import anlaiye.com.cn.csdn_retrofit.base.AppendUrlParamInterceptor;
 import anlaiye.com.cn.csdn_retrofit.base.NetUtils;
 import anlaiye.com.cn.csdn_retrofit.base.NetworkConfig;
 import anlaiye.com.cn.csdn_retrofit.base.PreHandleNoNetInterceptor;
+import anlaiye.com.cn.csdn_retrofit.base.gson.CstGsonConverterFactory;
 import anlaiye.com.cn.csdn_retrofit.normal.GankApi;
 import anlaiye.com.cn.csdn_retrofit.normal.GetBean;
 import io.reactivex.Completable;
@@ -28,7 +29,6 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RxActivity extends AppCompatActivity {
 
@@ -70,8 +70,14 @@ public class RxActivity extends AppCompatActivity {
         //Step1 拿到Retrofit实例
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://gank.io/")
+
                 //引入Gson解析库 ，就可以直接以实体的形式拿到返回值
-                .addConverterFactory(GsonConverterFactory.create())
+                //.addConverterFactory(GsonConverterFactory.create())
+
+                //加入我们自定义的Gson解析库，就可以更友好的处理错误
+                .addConverterFactory(CstGsonConverterFactory.create())
+
+
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 //将我们客制化的OkHttp实例传入
                 .client(builder.build())

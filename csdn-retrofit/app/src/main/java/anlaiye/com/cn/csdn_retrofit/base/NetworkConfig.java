@@ -1,4 +1,4 @@
-package anlaiye.com.cn.csdn_retrofit;
+package anlaiye.com.cn.csdn_retrofit.base;
 
 /**
  * 介绍：网络设置类

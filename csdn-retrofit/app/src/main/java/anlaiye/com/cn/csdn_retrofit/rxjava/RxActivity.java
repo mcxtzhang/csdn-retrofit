@@ -9,7 +9,8 @@ import android.widget.Toast;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
-import anlaiye.com.cn.csdn_retrofit.NetworkConfig;
+import anlaiye.com.cn.csdn_retrofit.base.AppendUrlParamInterceptor;
+import anlaiye.com.cn.csdn_retrofit.base.NetworkConfig;
 import anlaiye.com.cn.csdn_retrofit.R;
 import anlaiye.com.cn.csdn_retrofit.normal.GankApi;
 import anlaiye.com.cn.csdn_retrofit.normal.GetBean;
@@ -40,8 +41,12 @@ public class RxActivity extends AppCompatActivity {
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
+        //自动追加参数
+        builder.addInterceptor(new AppendUrlParamInterceptor());
+
+
         //OkHttp的Log信息拦截器
-        if (NetworkConfig.DEBUG){
+        if (NetworkConfig.DEBUG) {
             HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
             httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(httpLoggingInterceptor);

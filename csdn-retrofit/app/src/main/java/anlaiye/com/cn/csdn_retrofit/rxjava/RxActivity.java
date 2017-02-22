@@ -13,6 +13,7 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import anlaiye.com.cn.csdn_retrofit.R;
 import anlaiye.com.cn.csdn_retrofit.base.NetUtils;
@@ -98,6 +99,17 @@ public class RxActivity extends AppCompatActivity {
         };
         builder.cache(cache)
                 .addInterceptor(cacheInterceptor);
+
+
+        //okhttp 设置超时
+        builder.connectTimeout(60, TimeUnit.SECONDS);
+        builder.readTimeout(60, TimeUnit.SECONDS);
+        builder.writeTimeout(60, TimeUnit.SECONDS);
+
+        //错误重连
+        builder.retryOnConnectionFailure(true);
+
+
 
 
         //OkHttp的Log信息拦截器

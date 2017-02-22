@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import anlaiye.com.cn.csdn_retrofit.base.AppendHeaderParamInterceptor;
 import anlaiye.com.cn.csdn_retrofit.base.AppendUrlParamInterceptor;
 import anlaiye.com.cn.csdn_retrofit.base.NetworkConfig;
 import anlaiye.com.cn.csdn_retrofit.R;
@@ -41,8 +42,11 @@ public class RxActivity extends AppCompatActivity {
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
-        //自动追加参数
+        //自动追加url参数
         builder.addInterceptor(new AppendUrlParamInterceptor());
+
+        //自动追加header
+        builder.addInterceptor(new AppendHeaderParamInterceptor());
 
 
         //OkHttp的Log信息拦截器

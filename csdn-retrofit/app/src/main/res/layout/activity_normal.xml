@@ -32,6 +32,18 @@
         android:layout_height="wrap_content"
         android:text="url注解"/>
 
+    <Button
+        android:id="@+id/btnRemoveWrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="统一未剥离BaseBean"/>
+
+    <Button
+        android:id="@+id/btnRemoveWrapper2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="统一剥离BaseBean"/>
+
     <TextView
         android:id="@+id/tvResult"
         android:layout_width="wrap_content"

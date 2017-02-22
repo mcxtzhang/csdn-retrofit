@@ -21,8 +21,8 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
 
     @Override
     public T convert(ResponseBody value) throws IOException {
-        //value 服务器回传给我们的body
-        String response = value.toString();
+        //▲ value 服务器回传给我们的body
+        String response = value.string();
 
         //构建泛型的type  BaseBean<type>
         Type baseBeanType = $Gson$Types.newParameterizedTypeWithOwner(null, BaseBean.class, type);
@@ -32,7 +32,9 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
         if (baseBean.isError()) {
             throw new ResultException(baseBean.geteCode(), baseBean.geteMsg());
         } else {
-            return (T) baseBean;
+            //成功返回 继续用原来的 Type类 解析
+
+            return (T) baseBean.getResults();
         }
 
     }

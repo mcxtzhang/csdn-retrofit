@@ -1,5 +1,9 @@
 package anlaiye.com.cn.csdn_retrofit.normal;
 
+import java.util.List;
+
+import anlaiye.com.cn.csdn_retrofit.base.gson.BaseBean;
+import anlaiye.com.cn.csdn_retrofit.rxjava.BlogBean;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -71,10 +75,10 @@ public interface GankApi {
     @FormUrlEncoded
     @POST("api/add2gank")
     Observable<Object> postDataByRx(@Field("url") String url,
-                                @Field("desc") String desc,
-                                @Field("who") String who,
-                                @Field("type") String type,
-                                @Field("debug") String debug);
+                                    @Field("desc") String desc,
+                                    @Field("who") String who,
+                                    @Field("type") String type,
+                                    @Field("debug") String debug);
 
     @FormUrlEncoded
     @POST("api/add2gank")
@@ -83,4 +87,26 @@ public interface GankApi {
                                      @Field("who") String who,
                                      @Field("type") String type,
                                      @Field("debug") String debug);
+
+
+    /**
+     * 数据类型： 福利 | Android | iOS | 休息视频 | 拓展资源 | 前端 | all
+     * 请求个数： 数字，大于0
+     * 第几页：数字，大于0
+     */
+    @GET("api/data/{category}/{size}/{page}")
+    Observable<BaseBean<List<BlogBean>>> getDataByWrapper(@Path("category") String a,
+                                                          @Path("size") String b,
+                                                          @Path("page") String c);
+
+
+    /**
+     * 数据类型： 福利 | Android | iOS | 休息视频 | 拓展资源 | 前端 | all
+     * 请求个数： 数字，大于0
+     * 第几页：数字，大于0
+     */
+    @GET("api/data/{category}/{size}/{page}")
+    Observable<List<BlogBean>> getDataNoWrapper(@Path("category") String a,
+                                                @Path("size") String b,
+                                                @Path("page") String c);
 }

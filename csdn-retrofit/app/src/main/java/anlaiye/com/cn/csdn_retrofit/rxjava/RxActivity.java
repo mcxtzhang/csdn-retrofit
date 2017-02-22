@@ -10,12 +10,14 @@ import android.widget.Toast;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
 import anlaiye.com.cn.csdn_retrofit.R;
-import anlaiye.com.cn.csdn_retrofit.base.AppenBodyParamsInterceptor;
-import anlaiye.com.cn.csdn_retrofit.base.AppendUrlParamInterceptor;
 import anlaiye.com.cn.csdn_retrofit.base.NetUtils;
 import anlaiye.com.cn.csdn_retrofit.base.NetworkConfig;
-import anlaiye.com.cn.csdn_retrofit.base.PreHandleNoNetInterceptor;
+import anlaiye.com.cn.csdn_retrofit.base.gson.BaseBean;
 import anlaiye.com.cn.csdn_retrofit.base.gson.CstGsonConverterFactory;
 import anlaiye.com.cn.csdn_retrofit.normal.GankApi;
 import anlaiye.com.cn.csdn_retrofit.normal.GetBean;
@@ -26,7 +28,12 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.Cache;
+import okhttp3.CacheControl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 
@@ -47,16 +54,50 @@ public class RxActivity extends AppCompatActivity {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
         //按照顺序执行拦截器
-        builder.addInterceptor(new PreHandleNoNetInterceptor());
+        //builder.addInterceptor(new PreHandleNoNetInterceptor());
 
         //自动追加url参数
-        builder.addInterceptor(new AppendUrlParamInterceptor());
+        //builder.addInterceptor(new AppendUrlParamInterceptor());
 
         //自动追加header
         //builder.addInterceptor(new AppendHeaderParamInterceptor());
 
         //将URl参数->Body
-        builder.addInterceptor(new AppenBodyParamsInterceptor());
+        //builder.addInterceptor(new AppenBodyParamsInterceptor());
+
+        //缓存设置
+        //构建缓存位置
+        File cacheFile = new File(getExternalCacheDir(), "csdn_retrofit");
+        final Cache cache = new Cache(cacheFile, 1024 * 1024 * 10);
+        Interceptor cacheInterceptor = new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request request = chain.request();
+                //如果没有网络
+                if (!NetUtils.isNetwork()) {
+                    //取  缓存
+                    Request newRequest = request.newBuilder()
+                            .cacheControl(CacheControl.FORCE_CACHE)
+                            .build();
+                    return chain.proceed(newRequest);
+                } else {
+                    // 有网 存
+
+                    int maxTime = 60 * 60 * 24;
+                    Response response = chain.proceed(request);
+                    Response newResponse = response.newBuilder()
+
+                            //套路代码 "http cache "
+                            .header("Cache-Control", "public, only-if-cached, max-stale=" + maxTime)
+                            .removeHeader("Progma")
+
+                            .build();
+                    return newResponse;
+                }
+            }
+        };
+        builder.cache(cache)
+                .addInterceptor(cacheInterceptor);
 
 
         //OkHttp的Log信息拦截器
@@ -182,6 +223,66 @@ public class RxActivity extends AppCompatActivity {
                             @Override
                             public void onError(Throwable e) {
                                 Toast.makeText(RxActivity.this, "错:" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
+
+        findViewById(R.id.btnRemoveWrapper).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable<BaseBean<List<BlogBean>>> android = gankApi.getDataByWrapper("Android", "10", "1");
+                android.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<BaseBean<List<BlogBean>>>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(BaseBean<List<BlogBean>> value) {
+                                mTvResult.setText(value.getResults().get(2).getDesc());
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
+            }
+        });
+
+        findViewById(R.id.btnRemoveWrapper2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable<List<BlogBean>> dataNoWrapper = gankApi.getDataNoWrapper("Android", "10", "1");
+                dataNoWrapper.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<List<BlogBean>>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(List<BlogBean> value) {
+                                mTvResult.setText("一共多少个数据" + value.size());
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+
                             }
                         });
             }

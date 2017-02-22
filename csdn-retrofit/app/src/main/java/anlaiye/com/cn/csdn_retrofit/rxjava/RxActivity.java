@@ -2,6 +2,7 @@ package anlaiye.com.cn.csdn_retrofit.rxjava;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -9,10 +10,10 @@ import android.widget.Toast;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
-import anlaiye.com.cn.csdn_retrofit.base.AppendHeaderParamInterceptor;
+import anlaiye.com.cn.csdn_retrofit.R;
+import anlaiye.com.cn.csdn_retrofit.base.AppenBodyParamsInterceptor;
 import anlaiye.com.cn.csdn_retrofit.base.AppendUrlParamInterceptor;
 import anlaiye.com.cn.csdn_retrofit.base.NetworkConfig;
-import anlaiye.com.cn.csdn_retrofit.R;
 import anlaiye.com.cn.csdn_retrofit.normal.GankApi;
 import anlaiye.com.cn.csdn_retrofit.normal.GetBean;
 import io.reactivex.Completable;
@@ -21,7 +22,6 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -46,7 +46,10 @@ public class RxActivity extends AppCompatActivity {
         builder.addInterceptor(new AppendUrlParamInterceptor());
 
         //自动追加header
-        builder.addInterceptor(new AppendHeaderParamInterceptor());
+        //builder.addInterceptor(new AppendHeaderParamInterceptor());
+
+        //将URl参数->Body
+        builder.addInterceptor(new AppenBodyParamsInterceptor());
 
 
         //OkHttp的Log信息拦截器
@@ -75,10 +78,25 @@ public class RxActivity extends AppCompatActivity {
                 Observable<GetBean> observable = gankApi.getDataByRx("Android", "10", "1");
                 observable.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<GetBean>() {
+                        .subscribe(new Observer<GetBean>() {
                             @Override
-                            public void accept(GetBean getBean) throws Exception {
-                                mTvResult.setText("Rxjava:\n" + getBean.getResults().get(1).getDesc());
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(GetBean value) {
+                                mTvResult.setText("Rxjava:\n" + value.getResults().get(1).getDesc());
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e("OkHttp", "!!!onError() called with: e = [" + e + "]");
+                            }
+
+                            @Override
+                            public void onComplete() {
+
                             }
                         });
 

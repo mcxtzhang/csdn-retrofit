@@ -6,7 +6,7 @@ import com.google.gson.internal.$Gson$Types;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
-import anlaiye.com.cn.csdn_retrofit.base.ResultException;
+import anlaiye.com.cn.net.base.ResultException;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 

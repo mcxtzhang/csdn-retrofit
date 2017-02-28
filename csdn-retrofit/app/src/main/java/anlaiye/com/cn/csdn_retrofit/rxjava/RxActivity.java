@@ -8,20 +8,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import anlaiye.com.cn.csdn_retrofit.R;
-import anlaiye.com.cn.csdn_retrofit.normal.GankApi;
 import anlaiye.com.cn.csdn_retrofit.normal.GetBean;
+import anlaiye.com.cn.net.RetrofitManager;
 import anlaiye.com.cn.net.base.NetUtils;
 import anlaiye.com.cn.net.base.NetworkConfig;
 import anlaiye.com.cn.net.base.gson.BaseBean;
-import anlaiye.com.cn.net.base.gson.CstGsonConverterFactory;
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
 import io.reactivex.Observable;
@@ -36,7 +33,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
 
 public class RxActivity extends AppCompatActivity {
 
@@ -50,6 +46,8 @@ public class RxActivity extends AppCompatActivity {
         NetUtils.init(this);
 
         mTvResult = (TextView) findViewById(R.id.tvResult);
+
+        RetrofitManager.init(this);
 
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -121,7 +119,7 @@ public class RxActivity extends AppCompatActivity {
 
 
         //Step1 拿到Retrofit实例
-        Retrofit retrofit = new Retrofit.Builder()
+/*        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://gank.io/")
 
                 //引入Gson解析库 ，就可以直接以实体的形式拿到返回值
@@ -134,14 +132,16 @@ public class RxActivity extends AppCompatActivity {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 //将我们客制化的OkHttp实例传入
                 .client(builder.build())
-                .build();
+                .build();*/
 
-        final GankApi gankApi = retrofit.create(GankApi.class);
+        //final GankApi gankApi = retrofit.create(GankApi.class);
 
         findViewById(R.id.btnGet).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Observable<GetBean> observable = gankApi.getDataByRx("Android", "10", "1");
+                Observable<GetBean> observable =
+                        RetrofitHelper.getGank()
+                        .getDataByRx("Android", "10", "1");
                 observable.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<GetBean>() {
@@ -174,7 +174,8 @@ public class RxActivity extends AppCompatActivity {
         findViewById(R.id.btnPost).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Observable<Object> observable = gankApi.postDataByRx("http://square.github.io/retrofit/",
+                Observable<Object> observable = RetrofitHelper.getGank()
+                        .postDataByRx("http://square.github.io/retrofit/",
                         "测试数据",
                         "未来Android大佬",
                         "Android",
@@ -212,7 +213,8 @@ public class RxActivity extends AppCompatActivity {
         btnCompletable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Completable completable = gankApi.postDataByRxNoReturn("http://square.github.io/retrofit/",
+                Completable completable = RetrofitHelper.getGank().postDataByRxNoReturn("http://square.github.io/retrofit/",
+
                         "测试数据",
                         "未来Android大佬",
                         "Android",
@@ -243,7 +245,8 @@ public class RxActivity extends AppCompatActivity {
         findViewById(R.id.btnRemoveWrapper).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Observable<BaseBean<List<BlogBean>>> android = gankApi.getDataByWrapper("Android", "10", "1");
+                Observable<BaseBean<List<BlogBean>>> android = RetrofitHelper.getGank()
+                        .getDataByWrapper("Android", "10", "1");
                 android.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<BaseBean<List<BlogBean>>>() {
@@ -273,7 +276,8 @@ public class RxActivity extends AppCompatActivity {
         findViewById(R.id.btnRemoveWrapper2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Observable<List<BlogBean>> dataNoWrapper = gankApi.getDataNoWrapper("Android", "10", "1");
+                Observable<List<BlogBean>> dataNoWrapper = RetrofitHelper.getGank()
+                        .getDataNoWrapper("Android", "10", "1");
                 dataNoWrapper.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<List<BlogBean>>() {

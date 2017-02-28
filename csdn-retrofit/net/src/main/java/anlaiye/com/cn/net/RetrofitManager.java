@@ -30,15 +30,19 @@ import retrofit2.Retrofit;
  */
 public class RetrofitManager {
     private static Context mContext;
+
     private OkHttpClient mOkHttpClient;
 
     private static class InnerHolder {
         private static RetrofitManager INSTACE = new RetrofitManager();
     }
 
-    public static RetrofitManager getInstance(Context context) {
+    public static void init(Context context){
         //防止内存泄露
         mContext = context.getApplicationContext();
+    }
+
+    public static RetrofitManager getInstance() {
         return InnerHolder.INSTACE;
     }
 

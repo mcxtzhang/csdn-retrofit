@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import anlaiye.com.cn.net.base.NetUtils;
 import anlaiye.com.cn.net.base.NetworkConfig;
 import anlaiye.com.cn.net.base.gson.CstGsonConverterFactory;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
@@ -37,7 +38,7 @@ public class RetrofitManager {
         private static RetrofitManager INSTACE = new RetrofitManager();
     }
 
-    public static void init(Context context){
+    public static void init(Context context) {
         //防止内存泄露
         mContext = context.getApplicationContext();
     }
@@ -57,7 +58,7 @@ public class RetrofitManager {
                 //加入我们自定义的Gson解析库，就可以更友好的处理错误
                 .addConverterFactory(CstGsonConverterFactory.create())
 
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 //将我们客制化的OkHttp实例传入
                 .client(mOkHttpClient)
                 .build();

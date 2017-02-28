@@ -1,7 +1,10 @@
-package anlaiye.com.cn.net.base;
+package anlaiye.com.cn.net.base.interceptor;
 
 import java.io.IOException;
 
+import anlaiye.com.cn.net.base.NetUtils;
+import anlaiye.com.cn.net.base.NetworkConfig;
+import anlaiye.com.cn.net.base.ResultException;
 import okhttp3.Interceptor;
 import okhttp3.Response;
 

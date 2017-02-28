@@ -278,7 +278,7 @@ public class RxActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Observable<List<BlogBean>> dataNoWrapper = RetrofitHelper.getGank()
                         .getDataNoWrapper("Android", "10", "1");
-                dataNoWrapper.subscribeOn(Schedulers.io())
+                dataNoWrapper
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<List<BlogBean>>() {
                             @Override

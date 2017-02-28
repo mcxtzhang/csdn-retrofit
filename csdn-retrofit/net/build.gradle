@@ -1,15 +1,17 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
+
     defaultConfig {
-        applicationId "anlaiye.com.cn.csdn_retrofit"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
@@ -23,10 +25,15 @@ android {
 def retrofit_version = "2.1.0"
 def rxjava_version = "2.0.1"
 
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
     compile 'com.android.support:appcompat-v7:25.1.0'
+    testCompile 'junit:junit:4.12'
+
+
 
     //zhangxutong add:
     //RxJava的依赖包
@@ -47,9 +54,4 @@ dependencies {
 
     //okhttp 日志拦截器
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.0'
-
-    compile project (':net')
-
-
-
 }

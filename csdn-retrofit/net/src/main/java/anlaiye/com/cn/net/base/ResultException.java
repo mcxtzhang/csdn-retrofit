@@ -1,4 +1,4 @@
-package anlaiye.com.cn.csdn_retrofit.base;
+package anlaiye.com.cn.net.base;
 
 /**
  * 介绍：友好的错误提示异常类

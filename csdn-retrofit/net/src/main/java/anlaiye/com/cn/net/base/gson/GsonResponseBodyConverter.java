@@ -1,4 +1,4 @@
-package anlaiye.com.cn.csdn_retrofit.base.gson;
+package anlaiye.com.cn.net.base.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.$Gson$Types;

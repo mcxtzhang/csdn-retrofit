@@ -1,4 +1,4 @@
-package anlaiye.com.cn.csdn_retrofit.base.gson;
+package anlaiye.com.cn.net.base.gson;
 
 /**
  * 介绍：与服务器约定好的 统一返回格式

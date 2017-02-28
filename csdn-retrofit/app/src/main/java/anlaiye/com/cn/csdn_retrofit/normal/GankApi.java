@@ -2,8 +2,8 @@ package anlaiye.com.cn.csdn_retrofit.normal;
 
 import java.util.List;
 
-import anlaiye.com.cn.csdn_retrofit.base.gson.BaseBean;
 import anlaiye.com.cn.csdn_retrofit.rxjava.BlogBean;
+import anlaiye.com.cn.net.base.gson.BaseBean;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;

@@ -1,4 +1,4 @@
-package anlaiye.com.cn.csdn_retrofit.base;
+package anlaiye.com.cn.net.base;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

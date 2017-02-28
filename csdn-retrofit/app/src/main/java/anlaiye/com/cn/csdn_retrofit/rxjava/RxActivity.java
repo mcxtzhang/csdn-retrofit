@@ -16,12 +16,12 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import anlaiye.com.cn.csdn_retrofit.R;
-import anlaiye.com.cn.csdn_retrofit.base.NetUtils;
-import anlaiye.com.cn.csdn_retrofit.base.NetworkConfig;
-import anlaiye.com.cn.csdn_retrofit.base.gson.BaseBean;
-import anlaiye.com.cn.csdn_retrofit.base.gson.CstGsonConverterFactory;
 import anlaiye.com.cn.csdn_retrofit.normal.GankApi;
 import anlaiye.com.cn.csdn_retrofit.normal.GetBean;
+import anlaiye.com.cn.net.base.NetUtils;
+import anlaiye.com.cn.net.base.NetworkConfig;
+import anlaiye.com.cn.net.base.gson.BaseBean;
+import anlaiye.com.cn.net.base.gson.CstGsonConverterFactory;
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
 import io.reactivex.Observable;
